@@ -1,5 +1,7 @@
 #+TITLE: VirtualBox迁移虚拟机文件
 
+<2017-10-22 周日>
+
 本质上搞定 [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) 。VirtualBox新建虚拟磁盘时会给它分配一个独一无二的UUID， 以后迁移时需要为这个虚拟磁盘文件新建一个UUID。
 
 * 1. 本机内迁移
