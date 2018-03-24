@@ -28,7 +28,7 @@ Linux上erase信号表示删除最后键入的字符. 这个信号即可以绑�
 
 使用远程登录工具的一个常见问题就是远程系统上erase信号和本地键盘Backspace键不匹配, 本来是想删除前一个字符, 屏幕上却输入了^H.
 
-这篇文章 (https://www.zhihu.com/question/23550774/answer/132576876)讲述了各终端模拟器修改Backspace键的键码方法.
+这篇文章 ( https://www.zhihu.com/question/23550774/answer/132576876 ) 讲述了各终端模拟器修改Backspace键的键码方法.
 
 更改一下终端的erase信号绑定值也是一种方法:
 stty erase ^H  或者
