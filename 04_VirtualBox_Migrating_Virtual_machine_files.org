@@ -1,0 +1,33 @@
+#+TITLE: VirtualBox迁移虚拟机文件
+
+本质上搞定 [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) 。VirtualBox新建虚拟磁盘时会给它分配一个独一无二的UUID， 以后迁移时需要为这个虚拟磁盘文件新建一个UUID。
+
+* 1. 本机内迁移
+
+一般用于更改默认安装路径， 把以前安装的虚拟机存储文件迁移到新目录。 
+
+使用 `VBoxManage.exe clonehd` 命令。
+
+原虚拟磁盘位置： "C:\Users\lei\VirtualBox VMs\debian9-64\debian.vmdk"
+
+迁移的目标地址："D:\virtualbox\debian\"
+
+假设 VirtualBox 安装在 "C:\Program Files\Oracle\VirtualBox"， 此目录下有 VBoxManage.exe 这个文件。
+
+在该目录运行命令行 ( 在文件夹空白地方按Shift键和鼠标右键, 有快捷菜单 )
+
+#+BEGIN_SRC sh
+C:\Program Files\Oracle\VirtualBox>VBoxManage.exe clonehd "C:\Users\lei\VirtualBox VMs\debian9-64\debian.vmdk" "D:\virtualbox\debian\debian.vmdk"
+#+END_SRC
+
+OK， 会有进度提示。然后新建虚拟机时选择已有虚拟磁盘即可。
+
+* 2. 不同机器上复制
+
+使用 `VBoxManage.exe internalcommands sethduuid` 命令.
+
+从其他机器上复制过来的虚拟磁盘文件.  假设放在了 "D:\virtualbox\debian\debian.vmdk"
+
+#+BEGIN_SRC sh
+C:\Program Files\Oracle\VirtualBox>VBoxManage.exe internalcommands sethduuid "D:\virtualbox\debian\debian.vmdk"
+#+END_SRC
