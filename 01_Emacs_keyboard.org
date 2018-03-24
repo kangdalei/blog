@@ -1,10 +1,12 @@
 #+TITLE: Emacs 按键二三事
 
-Emacs的按键是出了名的难按. 以至于新手入门第一件事就是改键盘布局, 否则没法学下去. 参考:[[http://www.cnblogs.com/kulou/archive/2011/11/04/2236588.html][Effective Emacs（中文）]]
+Emacs的按键是出了名的难按. 以至于新手入门第一件事就是改键盘布局, 否则没法学下去. 参考: Effective Emacs（中文）
 
 难道不是很奇怪吗? 为何"神的编辑器"如此古怪难用?  其实这主要是因为Emacs远远早于现代PC机键盘而出现, 它的快捷键不是在PC机键盘上设计的, 而是在早已消失的Lisp机键盘上敲定的. ( 参见: Peter Seibel 《编程人生》 Guy Steele 访谈篇)
 
-[[file:img/Space-cadet_keyboard.jpg][Space-cadet_keyboard]]
+[[file:img/Space-cadet_keyboard.jpg]]
+
+Space-Cadet_keyboard-2m.jpg
 
 https://en.wikipedia.org/wiki/Space-cadet_keyboard
 
