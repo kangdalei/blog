@@ -1,7 +1,6 @@
-
 Index
 
-[[file:01_Emacs_keyboard.org][Emacs 按键二三事]]
+[[file:01_Emacs_keyboard.org][01 Emacs 按键二三事]]
 
 
 
