@@ -1,0 +1,174 @@
+生活在emacs中(节选)
+IBM 
+Michael Stutz (stutz@dsl.org)
+* 目录                                                                  :toc:
+- [[#第一部分-基础知识][第一部分 基础知识]]
+  - [[#meta键按法][Meta键按法]]
+  - [[#键绑定][键绑定]]
+  - [[#删除键绑定][删除键绑定]]
+- [[#第二部分-基本模式和-文本编辑][第二部分 基本模式和 文本编辑]]
+  - [[#当前模式][当前模式]]
+  - [[#abbrev-模式][Abbrev 模式]]
+  - [[#文本操作][文本操作]]
+  - [[#搜索和替换][搜索和替换]]
+  - [[#编码][编码]]
+- [[#第三部分-高级文本操作][第三部分 高级文本操作]]
+- [[#第四部分-选项-寄存器-书签][第四部分 选项 寄存器 书签]]
+  - [[#选项][选项]]
+  - [[#书签和寄存器][书签和寄存器]]
+- [[#第五部分-确定视图的形状][第五部分 确定视图的形状]]
+- [[#第六部分-自定义emacs环境][第六部分 自定义Emacs环境]]
+- [[#第七部分-帮助走出困境][第七部分 帮助走出困境]]
+
+* 第一部分 基础知识
+
+** Meta键按法
+- 默认被绑定到 ALT键.
+- 按下 ESC键, 松开, 按下第二个键
+- "Ctrl-[" 键. 一般用于通过网络线路运行Emacs, 无法实用ESC键和ALT键.
+
+
+** 键绑定
+表 2.  常用的 Emacs 缓冲区和文件函数
+C-x C-s save-buffer 将当前的缓冲区保存到磁盘。
+C-x s save-some-buffers 要求将所有未保存的缓冲区保存到磁盘。
+C-x C-z suspend-emacs 挂起 Emacs 并使之成为一个后台进程。
+C-x C-q vc-toggle-read-only 切换当前缓冲区的可读状态（如果适用还可以执行版本控制）
+C-x i insert-file 在插入点插入某个文件的内容。
+
+表 3. 移动光标
+| C-a               | beginning-of-line      | 将插入点移到本行的开始处。                                      |
+| C-e               | end-of-line            | 将插入点移到本行的结尾。                                        |
+| M-a               | beginning-of-sentence  | 将插入点移到句子的开始处。                                      |
+| M-e               | end-of-sentence        | 将插入点移到句子的结尾处。                                      |
+| M-{               | beginning-of-paragraph | 将插入点移到段落的开始处。                                      |
+| M-}               | end-of-paragraph       | 将插入点移到段落的结尾处。                                      |
+| Ins               | overwrite-mode         | 切换改写模式（缺省为关闭）。                                    |
+| C-d               | delete-char            | 删除插入点处的字符。                                            |
+| M-d               | kill-word              | 从插入点开始向前删除字符，直到单词末尾。                        |
+| M-Backspace,M-Del | backward-kill-word     | 从插入点开始向回删除字符，直至单词的开始处。                    |
+| C-_ C-/ C-x u     | undo                   | 撤消您的上一次键入或操作                                        |
+| C-q  字符 或XXX   | quoted-insert          | 在插入点插入按键本身代表的字符或由八进制数字（XXX）表示的字符。 |
+| C-u  次数命令     | universal-argument     | 按总的次数（缺省为4次）连续执行命令                             |
+
+** 删除键绑定
+M-\ (delete-horizontal-space)，删除光标处的所有空格和Tab字符。
+M-SPC (just-one-space)，删除光标处的所有空格和Tab字符，但留下一个。
+C-x C-o (delete-blank-lines)，删除光标周围的空白行，保留当前行。
+M-^ (delete-indentation)，将两行合为一行，删除之间的空白和缩进。参见下面两图。
+C-S-Backspace (kill-whole-line)，删除整行。
+M-d (kill-word)，删除光标起一个单词。
+M-Backspace (backward-kill-word)，删除光标前单词。
+C-x Backspace (backward-kill-sentence)，往前删一句。
+M-k (kill-sentence)，删除光标起一句。
+M-z char (zap-to-char)，删至字符char为止。
+
+* 第二部分 基本模式和 文本编辑
+
+** 当前模式
+获得当前模式的描述可以使用 describe-mode 函数，该函数与 C-h m 进行了绑定，用于获得当前模式的描述。
+
+** Abbrev 模式
+
+一种支持缩写的次要模式
+定义一个缩写添加缩写的简单方式是，运行一个 inverse-add 缩写函数 inverse-add-global-abbrev 或者 inverse-add-
+local-abbrev。这些函数允许您为缓冲区中的某个单词定义一个缩写，第一个函数可以对当前 Emacs 会
+话中打开的任何缓冲区应用这一缩写，而第二个函数仅对与当前缓冲区具有相同的主要模式的缓冲区定义
+这一缩写。后者可用于定义仅适用于某些模式的缩写，例如对包含程序源代码的缓冲区中的长变量名进行
+定义。
+
+
+** 文本操作
+
+M-u 光标处至词尾转换为大写字母
+M-l 光标处至词尾转换为小写字母
+c-t 调换光标左右字母
+M-t 调换光标左右单词
+C-x C-t 调换上下行
+C-x C-l downcase-region 这一命令将区域中的内容转换为小写字母。
+
+
+
+可以自动对区域按不同的方式进行缩进。通过输入 C-x C-i 来运行 indent-rigidly 函数，该函数会将区 域中所有行向右缩进一个空格。[使用已有变化]
+
+** 搜索和替换
+C-s C-w 将光标处到其所在词的词尾之间的字符串放入搜索缓冲区
+C-s C-s 重复搜索
+C-s Enter 非增量搜索
+
+单词搜索 忽略换行符和空格
+‘M-s w’
+     If incremental search is active, toggle word search mode
+     (‘isearch-toggle-word’); otherwise, begin an incremental forward
+     word search (‘isearch-forward-word’).
+‘M-s w <RET> WORDS <RET>’
+     Search for WORDS, using a forward nonincremental word search.
+‘M-s w C-r <RET> WORDS <RET>’
+     Search backward for WORDS, using a nonincremental word search.
+
+** 编码
+
+以指定编码读取文件
+M-x revert-buffer-with-coding-system
+
+It is bound to C-x RET r, <menu-bar> <options> <mule>
+<set-various-coding-system> <revert-buffer-with-coding-system>.
+
+在保存的时候还可以指定文件的保存编码：
+M-x set-buffer-file-coding-system
+
+It is bound to C-x RET f, <menu-bar> <options> <mule>
+<set-various-coding-system> <set-buffer-file-coding-system>.
+
+
+* 第三部分 高级文本操作
+
+* 第四部分 选项 寄存器 书签
+
+** 选项
+
+emacs +15 filename  emacs打开filename文件，并将光标定位到15行
+emacs +15:10  filename  emacs打开filename文件，并将光标定位到15行,第10列
+emacs +15:10 filename --insert  myfile   emacs打开filename文件，并将光标定位到15行,第10列，然后插入myfile的文件内容
+
+emacs -nw 
+emacs --debug-init 启用lisp调试器
+emacs -u joe 以用户joe的配置文件(如果可读)起动emacs
+
+--no-init-file   不运行任何 .emacs 启动文件。
+-q               不运行任何 .emacs 启动文件。
+** 书签和寄存器
+
+| 键盘输入         | 描述                        |
+|------------------+-----------------------------|
+| C-x r space X    | 光标保存到寄存器X           |
+| C-x r s X        | 将区域保存到寄存器X         |
+| C-x r r X        | 将矩形区域保存到寄存器x     |
+| C-x r j X        | 移动光标到寄存器x中指定位置 |
+| C-x r i X        | 在光标处插入寄存器x的内容   |
+| C-x r m Bookmark | 设置一个Bookmark书签        |
+| c-x r l          | 列出所有书签                |
+| c-x r b Bookmark | 跳转至名为Bookmark书签      |
+|                  |                             |
+
+M-x bookmark-delete  删除书签
+
+* 第五部分 确定视图的形状
+
+* 第六部分 自定义Emacs环境
+
+
+* 第七部分 帮助走出困境
+C-h c     describe-key-briefly 该函数允许您输入一个键盘输入，然后在迷你缓冲区中告诉您该键盘输入所执行的函数的名称
+C-h k	  describe-key
+(insert "t")
+
+| 键盘输入         | 函数                | 描述                                                                   |
+|------------------+---------------------+------------------------------------------------------------------------|
+|                  | apropos             | 对于一个给定的正则表达式，这个命令将给出 apropos 命令和变量的列表。    |
+| C-h a regexp     | command-apropos     | 对于给定的 正则表达式 ，这个命令将给出 apropos 命令的列表。            |
+| C-h b            | describe-bindings   | 这个命令将在一个新的帮助缓冲区窗口中描述当前主要模式的所有有效的键绑定 |
+| C-h f            |                     |                                                                        |
+| C-h c  keystroke | describe-key-briefl | 这个命令将在迷你缓冲区中报告与给定 键盘输入 进行了绑定的函数名称。     |
+|                  |                     |                                                                        |
+|                  |                     |                                                                        |

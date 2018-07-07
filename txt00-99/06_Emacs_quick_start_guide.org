@@ -1,0 +1,92 @@
+Emacs快速入门
+
+Emacs常用知识备忘 （非原创）
+
+* 目录                                                                  :toc:
+- [[#在线帮助系统][在线帮助系统]]
+- [[#文本操作][文本操作]]
+- [[#键盘宏][键盘宏]]
+- [[#自定义快捷键][自定义快捷键]]
+  - [[#全局快捷键-global-set-key][全局快捷键 global-set-key]]
+  - [[#特殊mode快捷键-define-key][特殊mode快捷键 define-key]]
+- [[#mode和hook][mode和hook]]
+- [[#寄存器][寄存器]]
+
+* 在线帮助系统
+
+C-h 或 F1
+
+- C-h a 近似查找。可以通过正则表达式来查找命令名。如果需要匹配所有函数以及变量的话，可以使用M-x apropos命令。
+- C-h i 打开info文档。
+- C-h t 入门教程
+- C-h k 显示快捷键或菜单项的作用，绑定的命令。
+        如果在定制快捷键却不知道如何写的时候，可以用这个命令帮忙。比如，“Alt+空格”如何表示？按下C-h k 再按下“Alt+空格”，Emacs就会在弹出的buffer里显示 M-SPC...
+- C-h K 注意，大写K。对于Emacs的一些内部命令，跳转到Info文档的介绍。
+- C-h f 输入函数名，给出详细描述。
+- C-h v 输入预定义变量名，给出详细描述。
+- C-h m 给出当前mode的使用帮助。
+- ... C-h 作为后缀使用，显示所有以...为前缀的快捷键和对应命令。比如 C-x r C-h，显示所有C-x r开头的快捷键和对应命令。
+- C-h C-h 显示C-h命令的帮助。
+
+
+* 文本操作
+
+* 键盘宏
+
+F3  开始录制
+F4  结束录制
+F4  录制完宏后，运行宏
+C-x e 运行宏，重复按e，继续运行。
+F4 可以接受一个前缀数字参数，表示运行的次数。
+
+* 自定义快捷键
+
+** 全局快捷键 global-set-key
+
+(global-set-key key command)
+
+键盘按键key的语法有些复杂，最好让 kbd宏来帮忙展开。首先通过 C-h k 找到快捷键的标准写法，例如 “M-SPC”，然后把这个标准写法放到字符串里面作为 kbd 宏的参数，它会自动将其转换为Emacs能识别的格式。
+
+例如，把CTRL+F9绑定到编译命令上：
+
+(global-set-key (kbd "<C-f9>") 'compile)
+
+command那里一般是单引号+命令名字。
+
+** 特殊mode快捷键 define-key
+
+为某个mode设定快捷键
+
+(define-key keymap key command)
+
+例如在编辑C程序时将F9绑定到编译命令上：
+
+(define-key c-mode-map (kbd "<f9>") 'compile)
+
+其中c-mode-map就是对应到c-mode的keymap，一般各个mode都有独立的keymap，并且以mode名字加上-map来命名。
+
+* mode和hook
+定制某个特定的mode除了设置快捷键和修改一些该mode提供的变量之外，还有一个方法：通常一个major-mode提供一个hook，如果遵循命名规范的话，通常是mode的名字加上-hook，在进入这个major-mode的时候会调用对应的hook里的函数。
+
+例如：
+
+#+BEGIN_SRC lisp
+(add-hook 'c-mode-hook
+          '(lambda ()
+            ;;自动换行功能
+            (c-toggle-auto-newline 1)
+            ;;此模式下，按 Backspace会删除最多的空格
+            (c-toggle-hungry-state)
+            ;;显示目前光标在哪个函数里面
+            (which-function-mode t)
+            (auto-fill-mode t)
+            ;; 不适用tab 作为缩进字符
+            (setq indent-tabs-mode nil)
+            (c-subword-mode 1)))
+#+END_SRC
+
+使用lambda创建一个匿名函数，添加到c-mode的hook里，当进入c-mode时就会调用这个匿名函数。
+
+* 寄存器
+
+
