@@ -1,6 +1,9 @@
 生活在emacs中(节选)
+
 IBM 
+
 Michael Stutz (stutz@dsl.org)
+
 * 目录                                                                  :toc:
 - [[#第一部分-基础知识][第一部分 基础知识]]
   - [[#meta键按法][Meta键按法]]
@@ -15,7 +18,8 @@ Michael Stutz (stutz@dsl.org)
 - [[#第三部分-高级文本操作][第三部分 高级文本操作]]
 - [[#第四部分-选项-寄存器-书签][第四部分 选项 寄存器 书签]]
   - [[#选项][选项]]
-  - [[#书签和寄存器][书签和寄存器]]
+  - [[#寄存器][寄存器]]
+  - [[#书签][书签]]
 - [[#第五部分-确定视图的形状][第五部分 确定视图的形状]]
 - [[#第六部分-自定义emacs环境][第六部分 自定义Emacs环境]]
 - [[#第七部分-帮助走出困境][第七部分 帮助走出困境]]
@@ -127,17 +131,31 @@ It is bound to C-x RET f, <menu-bar> <options> <mule>
 
 ** 选项
 
+Emacs使用GNU风格的长选项。
+
 emacs +15 filename  emacs打开filename文件，并将光标定位到15行
+
 emacs +15:10  filename  emacs打开filename文件，并将光标定位到15行,第10列
+
 emacs +15:10 filename --insert  myfile   emacs打开filename文件，并将光标定位到15行,第10列，然后插入myfile的文件内容
 
 emacs -nw 
+
 emacs --debug-init 启用lisp调试器
+
 emacs -u joe 以用户joe的配置文件(如果可读)起动emacs
 
 --no-init-file   不运行任何 .emacs 启动文件。
+
 -q               不运行任何 .emacs 启动文件。
-** 书签和寄存器
+
+** 寄存器
+
+Emacs寄存器是通用的存储机制，可以存储很多内容，包括文本、矩形区块、缓冲区的位置，或者某些其他值或设置。
+每个寄存器都有一个标签，可以使用单个字符（区分大小写）来引用寄存器。一旦退出Emacs，将清空所有寄存器。
+
+所有寄存器命令都是以 C-x r 开头。
+
 
 | 键盘输入         | 描述                        |
 |------------------+-----------------------------|
@@ -151,7 +169,29 @@ emacs -u joe 以用户joe的配置文件(如果可读)起动emacs
 | c-x r b Bookmark | 跳转至名为Bookmark书签      |
 |                  |                             |
 
-M-x bookmark-delete  删除书签
+** 书签
+
+书签可以保存缓冲区中的位置，通过一个书签文件，可以在下次会话期间持续使用。
+
+*设置一个书签*
+
+C-x r m （bookmark-set），命令后紧跟书签名称。可以为很多文件设置书签，也可以在单个文件中设置很多书签。
+
+*列出书签*
+
+C-x r l (bookmarks-bmenu-list) 功能列出一个书签缓冲区。可以通过按Enter键选择一个书签。
+
+*跳转至一个书签*
+
+C-x r b (bookmark-jump) 在迷你缓冲区会提示输入要跳转到的书签，可以使用tab自动完成。
+
+*删除书签*
+
+M-x bookmark-delete  输入书签名， 删除书签。
+
+*保存书签*
+
+M-x bookmakr-save  一般Emacs会自动把书签保存到永久书签文件中。可通过bookmark-default-file 这个变量查看永久书签文件位置。
 
 * 第五部分 确定视图的形状
 
